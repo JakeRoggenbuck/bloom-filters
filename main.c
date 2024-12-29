@@ -19,6 +19,11 @@ struct BloomFilter build_bloom_filter(size_t size) {
     b.size = size;
     b.boolarr = calloc(size, sizeof(bool));
 
+    if (b.boolarr == NULL) {
+        fprintf(stderr, "Malloc failed.\n");
+        exit(1);
+    }
+
     return b;
 }
 
@@ -26,6 +31,11 @@ void resize(struct BloomFilter *b, size_t new_size) {
     int old_size = b->size;
     b->size = new_size;
     b->boolarr = realloc(b->boolarr, new_size * sizeof(bool));
+
+    if (b->boolarr == NULL) {
+        fprintf(stderr, "Malloc failed.\n");
+        exit(1);
+    }
 
     for (int i = old_size; i < b->size; ++i) {
         b->boolarr[i] = 0;
